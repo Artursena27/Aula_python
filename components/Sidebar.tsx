@@ -1,6 +1,6 @@
 import React from 'react';
 import { ContentType, MenuItem } from '../types';
-import { BookOpen, Box, Layers, Terminal } from 'lucide-react';
+import { Box, Layers, BookMarked } from 'lucide-react';
 
 interface SidebarProps {
   activeTab: ContentType | null;
@@ -11,65 +11,72 @@ const menuItems: MenuItem[] = [
   {
     id: ContentType.OOP,
     title: 'Orientação a Objetos',
-    description: 'Classes, construtores, métodos e boas práticas.',
+    description: 'Classes, métodos e integração.',
     icon: 'box'
   },
   {
     id: ContentType.API,
-    title: 'Ambientes e APIs',
-    description: 'Herança, venv, arquivos e sua primeira API.',
+    title: 'Ambientes, Arquivos e APIs',
+    description: 'Herança, venv e Web.',
     icon: 'layers'
   }
 ];
 
 const Sidebar: React.FC<SidebarProps> = ({ activeTab, onSelect }) => {
   return (
-    <aside className="w-full md:w-80 flex-shrink-0 bg-slate-900 border-r border-slate-800 flex flex-col h-full overflow-y-auto">
-      <div className="p-6 border-b border-slate-800">
-        <h1 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400 flex items-center gap-2">
-          <Terminal className="w-8 h-8 text-blue-400" />
-          Python AI
+    <aside className="w-full md:w-80 flex-shrink-0 bg-slate-900 border-r border-slate-800 flex flex-col h-full overflow-y-auto z-10">
+      <div className="p-6 border-b border-slate-800 bg-slate-900/50 sticky top-0 backdrop-blur-sm">
+        <h1 className="text-xl font-bold text-white flex items-center gap-2">
+          <BookMarked className="w-6 h-6 text-emerald-400" />
+          Python Masterclass
         </h1>
-        <p className="text-slate-400 text-sm mt-2">Guia interativo masterclass</p>
+        <p className="text-slate-500 text-xs mt-1 uppercase tracking-wider font-bold">Formação Completa</p>
       </div>
 
-      <nav className="p-4 space-y-4">
-        {menuItems.map((item) => {
-           const Icon = item.icon === 'box' ? Box : Layers;
-           const isActive = activeTab === item.id;
-           
-           return (
-            <button
-              key={item.id}
-              onClick={() => onSelect(item.id)}
-              className={`w-full text-left p-4 rounded-xl transition-all duration-300 group border ${
-                isActive 
-                  ? 'bg-slate-800 border-blue-500/50 shadow-lg shadow-blue-500/10' 
-                  : 'bg-transparent border-transparent hover:bg-slate-800/50 hover:border-slate-700'
-              }`}
-            >
-              <div className="flex items-center gap-3 mb-2">
-                <div className={`p-2 rounded-lg ${isActive ? 'bg-blue-500/20 text-blue-400' : 'bg-slate-800 text-slate-400 group-hover:text-slate-200'}`}>
-                  <Icon size={20} />
-                </div>
-                <span className={`font-semibold ${isActive ? 'text-blue-100' : 'text-slate-300 group-hover:text-white'}`}>
-                  {item.title}
-                </span>
+      <div className="px-6 py-4">
+        <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4">Conteúdo do Curso</h3>
+        <nav className="space-y-3">
+          {menuItems.map((item, index) => {
+             const Icon = item.icon === 'box' ? Box : Layers;
+             const isActive = activeTab === item.id;
+             
+             return (
+              <div key={item.id} className="relative">
+                {/* Connecting line for timeline effect */}
+                {index !== menuItems.length - 1 && (
+                  <div className="absolute left-[1.3rem] top-10 bottom-[-1.5rem] w-px bg-slate-800"></div>
+                )}
+                
+                <button
+                  onClick={() => onSelect(item.id)}
+                  className={`w-full text-left p-3 rounded-lg transition-all duration-200 group border flex items-start gap-3 ${
+                    isActive 
+                      ? 'bg-blue-500/10 border-blue-500/30' 
+                      : 'bg-transparent border-transparent hover:bg-slate-800'
+                  }`}
+                >
+                  <div className={`mt-0.5 p-1.5 rounded-md flex-shrink-0 ${isActive ? 'bg-blue-500 text-white' : 'bg-slate-800 text-slate-400 group-hover:text-slate-200'}`}>
+                    <Icon size={16} />
+                  </div>
+                  <div>
+                    <span className={`block font-medium text-sm ${isActive ? 'text-blue-100' : 'text-slate-300 group-hover:text-white'}`}>
+                      {item.title}
+                    </span>
+                    <span className="text-xs text-slate-500 block mt-0.5">
+                      {item.description}
+                    </span>
+                  </div>
+                </button>
               </div>
-              <p className="text-xs text-slate-400 leading-relaxed pl-[3.25rem]">
-                {item.description}
-              </p>
-            </button>
-           );
-        })}
-      </nav>
+             );
+          })}
+        </nav>
+      </div>
       
-      <div className="mt-auto p-6">
-        <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
-          <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">Dica Pro</h3>
-          <p className="text-xs text-slate-400">
-            Selecione um módulo acima. A IA irá gerar explicações únicas e analogias criativas para facilitar seu aprendizado.
-          </p>
+      <div className="mt-auto p-6 border-t border-slate-800 bg-slate-900/50">
+        <div className="flex items-center gap-3">
+           <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+           <span className="text-xs text-slate-400 font-mono">v2.5 AI Generating</span>
         </div>
       </div>
     </aside>

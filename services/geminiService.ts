@@ -11,23 +11,23 @@ const lessonSchema: Schema = {
     },
     introduction: {
       type: Type.STRING,
-      description: "Uma introdução didática e detalhada sobre o tópico.",
+      description: "O texto introdutório exato fornecido nas instruções.",
     },
     keyConcepts: {
       type: Type.ARRAY,
       items: { type: Type.STRING },
-      description: "Lista de 3 a 5 conceitos chave abordados.",
+      description: "Lista de conceitos chave abordados.",
     },
     examples: {
       type: Type.ARRAY,
-      description: "Lista de 4 a 5 exemplos práticos com analogias.",
+      description: "Lista de EXATAMENTE 5 exemplos práticos com analogias.",
       items: {
         type: Type.OBJECT,
         properties: {
           title: { type: Type.STRING, description: "Título do exemplo (ex: Construtores como Receitas)" },
-          analogy: { type: Type.STRING, description: "Uma analogia criativa da vida real explicando o conceito." },
-          code: { type: Type.STRING, description: "Código Python prático e bem comentado." },
-          explanation: { type: Type.STRING, description: "Explicação técnica do que o código faz." },
+          analogy: { type: Type.STRING, description: "Uma analogia criativa da vida real explicando o conceito em detalhes." },
+          code: { type: Type.STRING, description: "Código Python prático, extenso e bem comentado." },
+          explanation: { type: Type.STRING, description: "Explicação técnica detalhada de como o código funciona linha a linha." },
         },
         required: ["title", "analogy", "code", "explanation"],
       },
@@ -47,36 +47,45 @@ export const fetchLessonContent = async (type: ContentType): Promise<LessonConte
 
   if (type === ContentType.OOP) {
     prompt = `
-      Crie uma aula detalhada sobre Orientação a Objetos em Python.
+      Atue como um Professor Sênior de Engenharia de Software criando um material didático completo.
       
-      Tópicos obrigatórios:
-      - Classes e Objetos
-      - Construtores (__init__)
-      - Propriedades e self
-      - Métodos (Instância vs Classe)
-      - Integração entre classes
+      TÍTULO DA AULA: "Orientação a Objetos"
       
-      Requisitos:
-      - Linguagem: Português do Brasil.
-      - Tom: Didático, encorajador e profissional (Senior Engineer ensinando Junior).
-      - Gere EXATAMENTE 5 exemplos práticos.
-      - CADA exemplo deve ter uma "Analogia da Vida Real" criativa (ex: Carro, Casa, Restaurante, Videogame).
+      INTRODUÇÃO OBRIGATÓRIA (Use este texto exato na introdução):
+      "No próximo passo, você vai adquirir um sólido conhecimento em orientação a objetos e em boas práticas de programação com Python. Durante esse processo, você compreenderá os principais conceitos do paradigma de orientação a objetos, tais como classes, construtores, propriedades e diferentes tipos de métodos, bem como a integração entre classes. Aprenderá a aplicar esses conceitos no seu dia a dia de programação, aprimorando suas habilidades e garantindo códigos eficientes e organizados."
+      
+      CONTEÚDO TÉCNICO NECESSÁRIO (De cabo a rabo):
+      1. Classes e Objetos (A base).
+      2. Construtores (__init__) e self.
+      3. Propriedades (Getters/Setters/@property).
+      4. Métodos de Instância vs Métodos de Classe (@classmethod).
+      5. Integração/Associação entre classes (Um objeto usando outro).
+
+      REGRAS PARA EXEMPLOS:
+      - Gere EXATAMENTE 5 exemplos práticos e distintos.
+      - CADA exemplo deve ter uma "Analogia da Vida Real" muito clara (ex: Carro, Casa, Restaurante, Videogame, Conta Bancária).
+      - Os códigos devem ser didáticos e funcionais.
     `;
   } else {
     prompt = `
-      Crie uma aula detalhada sobre Ambientes Virtuais, Arquivos e APIs em Python.
+      Atue como um Professor Sênior de Engenharia de Software criando um material didático completo.
       
-      Tópicos obrigatórios:
-      - Herança e Polimorfismo (Conceitos avançados de OO aplicados)
-      - Ambientes Virtuais (venv) - Por que isolar?
-      - Manipulação de Arquivos (open, with)
-      - Criação de uma API simples (explicar o conceito de request/response)
+      TÍTULO DA AULA: "Ambientes virtuais, arquivos e APIs"
       
-      Requisitos:
-      - Linguagem: Português do Brasil.
-      - Tom: Didático, encorajador e profissional.
-      - Gere EXATAMENTE 5 exemplos práticos cobrindo os tópicos acima.
-      - CADA exemplo deve ter uma "Analogia da Vida Real" (ex: Herança biológica, Sala esterilizada para venv, Arquivo como gaveta, API como garçom).
+      INTRODUÇÃO OBRIGATÓRIA (Use este texto exato na introdução):
+      "Neste último passo da formação, você avançará em seus conhecimentos em Python e orientação a objetos, aplicando conceitos fundamentais como herança e polimorfismo. Além disso, será abordada a importância de isolar dependências e módulos por meio da criação de ambientes virtuais. Você também terá a oportunidade de desenvolver sua primeira API com Python!"
+      
+      CONTEÚDO TÉCNICO NECESSÁRIO (De cabo a rabo):
+      1. Herança (Conceito de pai/filho).
+      2. Polimorfismo (Mesmo método, comportamentos diferentes).
+      3. Ambientes Virtuais (venv) - Por que isolar projetos?
+      4. Manipulação de Arquivos (open, with, read, write).
+      5. Criação de API (Conceito de Request/Response, JSON).
+
+      REGRAS PARA EXEMPLOS:
+      - Gere EXATAMENTE 5 exemplos práticos e distintos.
+      - CADA exemplo deve ter uma "Analogia da Vida Real" (ex: Herança Genética, Sala Esterilizada para venv, Arquivo como um Diário, API como um Garçom).
+      - Os códigos devem ser didáticos e funcionais.
     `;
   }
 
@@ -87,7 +96,7 @@ export const fetchLessonContent = async (type: ContentType): Promise<LessonConte
       config: {
         responseMimeType: "application/json",
         responseSchema: lessonSchema,
-        temperature: 0.3, // Low temperature for consistent educational content
+        temperature: 0.2, // Baixa temperatura para seguir estritamente o roteiro
       },
     });
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { LessonContent } from '../types';
 import CodeBlock from './CodeBlock';
-import { Lightbulb, BookOpen, CheckCircle2 } from 'lucide-react';
+import { BookOpen, GraduationCap, ArrowRight } from 'lucide-react';
 
 interface LessonViewProps {
   content: LessonContent;
@@ -9,108 +9,112 @@ interface LessonViewProps {
 }
 
 const LessonView: React.FC<LessonViewProps> = ({ content, loading }) => {
+  // Loading skeleton state matches the new layout
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto p-8 animate-pulse space-y-8">
-        <div className="h-12 bg-slate-800 rounded-lg w-3/4"></div>
-        <div className="h-4 bg-slate-800 rounded w-full"></div>
-        <div className="h-4 bg-slate-800 rounded w-5/6"></div>
-        <div className="grid gap-6 mt-12">
-           {[1, 2, 3].map(i => (
-             <div key={i} className="h-64 bg-slate-800 rounded-xl"></div>
-           ))}
+        <div className="h-8 bg-slate-800 rounded w-1/3 mb-12"></div>
+        <div className="space-y-4">
+          <div className="h-4 bg-slate-800 rounded w-full"></div>
+          <div className="h-4 bg-slate-800 rounded w-full"></div>
+          <div className="h-4 bg-slate-800 rounded w-2/3"></div>
         </div>
+        <div className="h-64 bg-slate-800 rounded-xl mt-12"></div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-5xl mx-auto px-6 py-12 pb-32">
-      {/* Header Section */}
-      <header className="mb-12 border-b border-slate-800 pb-8">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-bold uppercase tracking-wide mb-4">
-          <BookOpen size={14} />
+    <article className="max-w-4xl mx-auto px-8 py-16">
+      {/* Title Header */}
+      <div className="mb-12">
+        <div className="flex items-center gap-2 text-blue-400 text-sm font-bold uppercase tracking-widest mb-4">
+          <GraduationCap size={18} />
           Módulo de Aprendizado
         </div>
-        <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+        <h1 className="text-5xl font-extrabold text-white mb-8 tracking-tight leading-tight">
           {content.title}
         </h1>
-        <p className="text-lg text-slate-300 leading-relaxed max-w-3xl">
-          {content.introduction}
-        </p>
         
-        <div className="mt-8 flex flex-wrap gap-3">
-          {content.keyConcepts.map((concept, idx) => (
-            <span key={idx} className="flex items-center gap-2 bg-slate-800 text-slate-200 px-3 py-1.5 rounded-md text-sm border border-slate-700">
-              <CheckCircle2 size={14} className="text-blue-500" />
-              {concept}
-            </span>
-          ))}
+        {/* User Defined Introduction Box */}
+        <div className="bg-slate-800/50 border-l-4 border-blue-500 p-6 rounded-r-xl">
+          <p className="text-lg text-slate-200 leading-relaxed font-light">
+            {content.introduction}
+          </p>
         </div>
-      </header>
+      </div>
 
-      {/* Examples Section */}
-      <div className="space-y-16">
+      {/* Key Concepts List */}
+      <div className="mb-16">
+        <h3 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4">Neste guia você vai aprender:</h3>
+        <ul className="grid sm:grid-cols-2 gap-3">
+          {content.keyConcepts.map((concept, idx) => (
+            <li key={idx} className="flex items-center gap-3 text-slate-300 bg-slate-900/50 px-4 py-3 rounded-lg border border-slate-800">
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+              {concept}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="h-px bg-slate-800 w-full mb-16"></div>
+
+      {/* Main Content Loop */}
+      <div className="space-y-24">
         {content.examples.map((example, idx) => (
-          <div key={idx} className="group relative">
-            {/* Connector Line */}
-            {idx !== content.examples.length - 1 && (
-              <div className="absolute left-6 top-16 bottom-[-4rem] w-0.5 bg-slate-800 group-hover:bg-blue-500/30 transition-colors"></div>
-            )}
-
-            <div className="flex flex-col md:flex-row gap-6">
-              {/* Number Badge */}
-              <div className="flex-shrink-0">
-                <div className="w-12 h-12 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-xl font-bold text-blue-400 group-hover:border-blue-500/50 group-hover:bg-blue-500/10 transition-all shadow-lg">
-                  {idx + 1}
-                </div>
-              </div>
-
-              {/* Content Card */}
-              <div className="flex-grow space-y-6">
-                <div>
-                   <h2 className="text-2xl font-bold text-white mb-2 group-hover:text-blue-300 transition-colors">
-                    {example.title}
-                  </h2>
-                </div>
-
-                {/* Analogy Box */}
-                <div className="bg-gradient-to-br from-amber-500/10 to-orange-500/5 border border-amber-500/20 rounded-xl p-6 relative overflow-hidden">
-                  <div className="absolute top-0 right-0 p-4 opacity-10">
-                    <Lightbulb size={100} />
-                  </div>
-                  <div className="flex items-start gap-3 relative z-10">
-                    <Lightbulb className="flex-shrink-0 text-amber-400 mt-1" size={24} />
-                    <div>
-                      <h3 className="font-bold text-amber-200 mb-1 text-sm uppercase tracking-wider">Analogia da Vida Real</h3>
-                      <p className="text-slate-200 italic leading-relaxed">
-                        "{example.analogy}"
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Code & Explanation */}
-                <div className="grid lg:grid-cols-2 gap-6">
-                  <div className="order-2 lg:order-1">
-                     <CodeBlock code={example.code} />
-                  </div>
-                  <div className="order-1 lg:order-2 flex flex-col justify-center">
-                    <h3 className="font-bold text-slate-200 mb-2 flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-blue-500"></span>
-                      Explicação Técnica
-                    </h3>
-                    <p className="text-slate-400 leading-relaxed text-sm">
-                      {example.explanation}
-                    </p>
-                  </div>
-                </div>
-              </div>
+          <section key={idx} className="scroll-mt-8">
+            <div className="flex items-baseline gap-4 mb-6">
+              <span className="text-6xl font-black text-slate-800 select-none">
+                {idx + 1}
+              </span>
+              <h2 className="text-3xl font-bold text-white">
+                {example.title}
+              </h2>
             </div>
-          </div>
+
+            {/* Analogy Section - Highlighted */}
+            <div className="bg-blue-950/20 border border-blue-500/20 rounded-2xl p-6 mb-8">
+              <h3 className="text-blue-400 font-bold text-sm uppercase tracking-wide mb-2 flex items-center gap-2">
+                <span className="text-xl">💡</span> Analogia Prática
+              </h3>
+              <p className="text-blue-100/90 text-lg leading-relaxed italic">
+                "{example.analogy}"
+              </p>
+            </div>
+
+            {/* Explanation Text */}
+            <div className="prose prose-invert max-w-none mb-8">
+              <p className="text-slate-300 leading-7 text-lg">
+                {example.explanation}
+              </p>
+            </div>
+
+            {/* Code Block */}
+            <div className="mt-6">
+               <div className="flex justify-between items-end mb-2 px-1">
+                 <span className="text-xs text-slate-500 font-mono">exemplo_pratico_{idx + 1}.py</span>
+               </div>
+               <CodeBlock code={example.code} />
+            </div>
+
+            {idx < content.examples.length - 1 && (
+              <div className="flex justify-center mt-16 opacity-30">
+                <ArrowRight className="transform rotate-90 text-slate-500" size={32} />
+              </div>
+            )}
+          </section>
         ))}
       </div>
-    </div>
+      
+      {/* Footer / Completion */}
+      <div className="mt-24 pt-12 border-t border-slate-800 text-center">
+        <div className="inline-block p-4 rounded-full bg-emerald-500/10 text-emerald-400 mb-4">
+          <BookOpen size={32} />
+        </div>
+        <h3 className="text-2xl font-bold text-white mb-2">Módulo Concluído</h3>
+        <p className="text-slate-400">Você revisou todos os conceitos desta seção.</p>
+      </div>
+    </article>
   );
 };
 
